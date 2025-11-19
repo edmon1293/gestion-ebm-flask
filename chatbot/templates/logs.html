@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Logs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #0d47a1;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        th {
+            background-color: #0d47a1;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:hover {
+            background-color: #e3f2fd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Logs del Sistema</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>Acción</th>
+                <th>Descripción</th>
+                <th>IP Usuario</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.id }}</td>
+                <td>{{ log.user_id }}</td>
+                <td>{{ log.accion }}</td>
+                <td>{{ log.descripcion }}</td>
+                <td>{{ log.ip_usuario }}</td>
+                <td>{{ log.fecha }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6" style="text-align:center;">No hay registros disponibles.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

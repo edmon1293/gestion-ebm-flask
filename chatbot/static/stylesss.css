@@ -1,0 +1,193 @@
+/* Body y background */
+body {
+  background-image: url('../static/img/backround\ \(1\).png'); 
+  background-size: cover;           
+  background-repeat: no-repeat;     
+  background-position: center;     
+  margin: 0;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between; /* Botones a los lados, título en el centro */
+    align-items: center; /* Centrado vertical */
+    padding: 20px 40px;
+    background-color: rgba(5, 51, 98, 0.9); /* Fondo semitransparente */
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-bottom: 3px solid #3498db; /* Línea decorativa */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* Sombra ligera */
+    border-radius: 0 0 10px 10px; /* Bordes redondeados abajo */
+}
+
+/* Botones */
+#menuBtn, #salirBtn {
+    background-color: #e74c3c; /* Rojo elegante */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+#menuBtn:hover, #salirBtn:hover {
+    background-color: white;
+    color: #e74c3c;
+    transform: scale(1.05); /* Efecto sutil */
+}
+
+/* Título centrado */
+header h1 {
+    text-align: center;
+    flex-grow: 1; /* Ocupa el espacio central */
+    font-size: 1.5rem;
+    line-height: 1.4;
+    margin: 0 20px; /* Espacio lateral para que no choque con botones */
+}
+
+/* Subtítulo "Ventas" */
+header .subtitle {
+    font-size: 1.2rem;
+    color: #ecf0f1;
+}
+
+/* Main y chat */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.chat-box {
+  background: white; 
+  color: black;
+  width: 90%;
+  max-width: 600px;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background: white;
+}
+
+.message.bot {
+  background: #ffc107;
+  color: black;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  align-self: flex-start;
+}
+
+.message.user {
+  background: #4d16cd; 
+  color: white;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  align-self: flex-end;
+}
+
+.input-group {
+  display: flex;
+  border-top: 1px solid #ccc;
+  background: #0f1210; 
+}
+
+.input-group input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: white;
+}
+
+.input-group input::placeholder {
+  color: #ccc;
+}
+
+.input-group button {
+  background-color: #423ce8;
+  color: white;
+  border: none;
+  padding: 0 16px;
+  cursor: pointer;
+  border-left: 1px solid #ccc;
+}
+.chat-box {
+  background: white; 
+  color: black;
+  width: 90%;
+  max-width: 600px;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden; /* Mantiene la caja fija */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Sombra opcional */
+}
+
+/* Mensajes con scroll interno */
+#messages {
+  flex: 1; /* Ocupa todo el espacio disponible */
+  padding: 10px;
+  overflow-y: auto; /* Scroll vertical solo aquí */
+  background: white;
+}
+
+/* Para que al agregar un mensaje el scroll baje automáticamente */
+#messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+#messages::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+/* Mantener input siempre visible */
+.input-group {
+  display: flex;
+  border-top: 1px solid #ccc;
+  background: #0f1210;
+  flex-shrink: 0; /* Que no se reduzca al hacer scroll */
+}
+
+
+
+
+/* Responsive header */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 20px;
+    }
+
+    header h1 {
+        font-size: 1.3rem;
+    }
+
+    #menuBtn, #salirBtn {
+        width: 100%;
+        max-width: 200px;
+    }
+}

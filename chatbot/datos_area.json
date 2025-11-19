@@ -1,0 +1,44 @@
+{
+  "ventas": [
+    {
+      "titulo": "Reporte de ventas mensual",
+      "contenido": "Este mes se vendieron 500 unidades. Los productos más vendidos fueron: Producto A, Producto B y Producto C."
+    },
+    {
+      "titulo": "Guía de precios",
+      "contenido": "Lista de precios para clientes: Producto A - $100, Producto B - $150, Producto C - $200."
+    },
+    {
+      "titulo": "Clientes destacados",
+      "contenido": "Los clientes con más compras este mes son: Cliente1, Cliente2 y Cliente3."
+    }
+  ],
+  "finanzas": [
+    {
+      "titulo": "Balance general",
+      "contenido": "El balance general muestra activos por $50,000 y pasivos por $20,000, con un capital neto de $30,000."
+    },
+    {
+      "titulo": "Informe de gastos",
+      "contenido": "Los gastos del mes incluyen: nómina $15,000, suministros $3,000 y servicios $2,000."
+    },
+    {
+      "titulo": "Proyecciones financieras",
+      "contenido": "Se espera un incremento del 10% en ingresos el próximo trimestre basado en tendencias actuales."
+    }
+  ],
+  "admin": [
+    {
+      "titulo": "Información de ventas",
+      "contenido": "Este área puede consultar todos los reportes de ventas, clientes y precios."
+    },
+    {
+      "titulo": "Información financiera",
+      "contenido": "Este área puede consultar balances generales, gastos y proyecciones financieras."
+    },
+    {
+      "titulo": "Usuarios y roles",
+      "contenido": "El administrador puede ver y gestionar todos los usuarios, sus áreas y niveles de acceso."
+    }
+  ]
+}

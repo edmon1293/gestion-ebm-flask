@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='img/fabicon.png') }}" type="image/x-icon">
+  
+</head>
+<body>
+  <header>
+    <h1>Panel de Administración - GESTON EBM</h1>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Usuarios Registrados</h2>
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>AREA</th>
+          <th>NIVEL</th>
+          <th>ESTADO</th>
+        </tr>
+        {% for usuario in usuarios %}
+        <tr>
+          <td>{{ usuario.id }}</td>
+          <td>{{ usuario.username }}</td>
+          <td>{{ usuario.area }}</td>
+          <td>{{ usuario.nivel}}</td>
+          <td>{{ 'Activo' if usuario.activo else 'Inactivo' }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Usuarios Activos</h2>
+      <p>Total activos: {{ usuarios_activos }}</p>
+    </div>
+
+    <div class="card">
+      <h2>Monitoreo del Sistema</h2>
+      <p>Último acceso: {{ ultimo_acceso }}</p>
+      <p>Sesiones activas: {{ sesiones_activas }}</p>
+      <p>Errores recientes: {{ errores_recientes }}</p>
+    </div>
+
+    </div>
+  </div>
+</body>
+</html>

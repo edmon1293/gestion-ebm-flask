@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geston EBM</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles_templates.css') }}" />
+  <link rel="icon" href="{{ url_for('static', filename='img/fabicon.png') }}" type="image/x-icon">
+</head>
+<body data-username="{{ username }}">
+
+  <header>
+    <div class="menu-container">
+      <button id="menuBtn">Menú</button>
+      <div class="menu-dropdown">
+        <a href="{{ url_for('admin_panel') }}">Panel de Administrador</a>
+        <a href="{{ url_for('register') }}">Registro</a>
+        <a href="{{ url_for('edit') }}">Gestión de Usuarios</a>
+      </div>
+    </div>
+    <h1>BIENVENIDO A GESTON EBM</h1>
+  </header>
+
+  <main>
+    <div class="main-container">
+      <!-- ====== HISTORIAL ====== -->
+      <aside class="chat-history">
+        <button id="nuevo-chat-btn">Nuevo Chat</button>
+
+        <div class="card">
+          <h2>Historial</h2>
+          <ul id="historial-conversaciones"></ul>
+        </div>
+      </aside>
+
+      <!-- ====== CHAT PRINCIPAL ====== -->
+      <section class="chat-area">
+        <div class="chat-box" id="chat-box">
+          <div class="mensaje bot">
+            ¡Hola {{ username }}! ¿Cómo puedo ayudarte hoy?
+          </div>
+        </div>
+
+        <div class="input-group">
+          <input type="text" id="mensaje" placeholder="¿Cómo puedo ayudarte?" />
+          <button id="enviar-btn">Enviar</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- === Archivo JavaScript externo === -->
+
+  <script>
+  const USERNAME = "{{ username }}";
+</script>
+  <script src="{{ url_for('static', filename='chatbot.js') }}"></script>
+</body>
+</html>

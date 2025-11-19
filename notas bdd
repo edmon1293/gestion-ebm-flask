@@ -1,0 +1,41 @@
+notas sobre bdd local en nueva computadora
+se tiene que instalar postgre con (en kali linux)
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+
+la bdd venia por default con autenticacion por usuario del sistema con peer pero si se quiere usar en una computadora 
+nueva que no tenga el mismo usario de sistema y se quiera acceder a la bdd por contraseña se tiene que modificar el archivo pg_hba.conf que esta ubicado en /etc/postgresql/18/main
+el usuario es postgres y la contraseña es gestonebm
+
+para reiniciar el servicio y actualizar los cambios: sudo service postgresql restart
+
+para cambbio de contraseña:
+sudo -u postgres psql
+ALTER USER postgres WITH PASSWORD 'gestonebm';
+\q
+
+crear una base de datos: sudo -u postgres createdb usuarios_geston
+si ya existia el sistema te avisa y no pasa nada
+
+si ya se tiene una, la base de datos se tiene que importar con pg_restore -U postgres -d usuarios_geston -h localhost ~/Descargas/usuarios_geston.sql
+
+para acceder a la base: psql -U postgres -d usuarios_geston -h localhost
+
+comandos: 
+\dt              -- lista las tablas
+SELECT * FROM usuarios;   -- confirma usuarios cargados
+SELECT * FROM mensajes LIMIT 5;   -- confirma mensajes
+
+conexion de lector de huellas hacia aplicaicon 
+primero crear una tabla en la bdd usuarios_geston para mapear ids de huella con usuarios con 
+
+CREATE TABLE huellas (
+  finger_id INT PRIMARY KEY,          -- ID que asigna el lector de huellas
+  user_id INT REFERENCES usuarios(id) -- Usuario de la tabla usuarios
+);
+
+crear unarelacion:el id del letor es 0 y el 7 es el numero de id de la bdd usuarios_geston
+
+INSERT INTO huellas (finger_id, user_id) VALUES (0, 7);
+
+

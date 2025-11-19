@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuarios</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles_reg.css') }}">
+</head>
+<body>
+    <div class="container">
+        <section class="hero">
+            <div class="brand">
+                <div class="logo">EBM</div>
+                <div>
+                    <strong>GESTION EBM</strong>
+                    <div class="small">BIENVENIDO A GESTION EBM</div>
+                </div>
+            </div>
+
+            <h1>Bienvenido</h1>
+            <p class="lead">Crea y administra usuarios de forma segura. Los campos obligatorios están marcados con <strong>*</strong>.</p>
+
+            <div class="info-list">
+                <ul>
+                    <li>Usuario: nombre único para iniciar sesión.</li>
+                    <li>Contraseña: al menos 8 caracteres, mezcla de letras y números.</li>
+                    <li>Área: departamento o unidad.</li>
+                    <li>Nivel: nivel de acceso (1, 2 o 3).</li>
+                </ul>
+            </div>
+        </section>
+
+        <aside class="card">
+            <!-- ✅ FORMULARIO CORREGIDO -->
+            <form id="registerForm" method="POST" action="{{ url_for('register') }}" novalidate>
+                <div class="field">
+                    <label for="username">Usuario *</label>
+                    <input id="username" name="username" type="text" placeholder="ej. javier.m" required>
+                    <div id="usernameErr" class="error">Ingresa un usuario válido.</div>
+                </div>
+
+                <div class="field">
+                    <label for="password">Contraseña *</label>
+                    <div class="pw-input">
+                        <input id="password" name="password" type="password" placeholder="********" required>
+                        <button type="button" id="togglePw" class="btn ghost">Mostrar</button>
+                    </div>
+                    <div class="pw-meter">
+                        <span id="pwBar"></span>
+                    </div>
+                    <div class="row-bottom">
+                        <div class="small hint">Mínimo 8 caracteres.</div>
+                        <div id="pwLabel" class="small hint"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="field">
+                        <label for="area">Área *</label>
+                        <select id="area" name="area" required>
+                            <option value="">-- Selecciona un área --</option>
+                            <option value="ventas">Ventas</option>
+                            <option value="finanzas">Finanzas</option>
+                            <option value="admin">Administración</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="nivel">Nivel *</label>
+                        <select id="nivel" name="nivel" required>
+                            <option value="">-- Selecciona un nivel --</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="formError" class="error"></div>
+
+                <div class="actions">
+                    <button type="submit" class="btn">Crear usuario</button>
+
+                    <!-- ✅ Botón regresar corregido -->
+                    <a href="{{ url_for('chatbot_admin') }}" class="btn ghost">Regresar</a>
+                </div>
+
+                <div class="hint">Al crear el usuario se enviará la información al servidor</div>
+            </form>
+        </aside>
+    </div>
+
+    <script src="{{ url_for('static', filename='script4.js') }}"></script>
+</body>
+</html>
