@@ -631,8 +631,8 @@ def fingerprint_verify():
         }), 500
 
 
-@app.route('/api/fingerprint/login', methods=['POST'])
-def fingerprint_login():
+@app.route('/api/fingerprint/login_json', methods=['POST'])
+def fingerprint_login_json():
     """
     Endpoint para autenticación por huella desde ESP32.
     
