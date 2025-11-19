@@ -29,8 +29,13 @@ from flask_cors import CORS
 # CONFIGURACIÓN FLASK
 # ===============================================
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = os.getenv('SECRET_KEY', os.urandom(24).hex())
 CORS(app)  # Permitir peticiones del ESP32
+# Configuración para sesiones en producción
+app.config['SESSION_COOKIE_SECURE'] = True  # Solo HTTPS
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+
 # ===============================================
 # CONFIGURACIÓN OPENAI
 # ===============================================
