@@ -132,6 +132,46 @@ def login():
             print("Error login:", e)
             return render_template("login.html", error=f"Error en la base de datos: {str(e)}")
     return render_template("login.html")
+@app.route("/api/fingerprint/login", methods=["POST"])
+def fingerprint_login():
+    data = request.get_json()
+    finger_id = data.get("sensor_id")
+    device_id = data.get("device_id")
+
+    conn = get_db_connection()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cur.execute("SELECT user_id FROM huellas WHERE finger_id=%s", (finger_id,))
+    fila = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    if fila:
+        user_id = fila["user_id"]
+
+        # Buscar datos del usuario
+        conn = get_db_connection()
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cur.execute("SELECT * FROM usuarios WHERE id=%s", (user_id,))
+        user = cur.fetchone()
+        cur.close()
+        conn.close()
+
+        # Crear sesión
+        session["loggedin"] = True
+        session["user_id"] = user["id"]
+        session["username"] = user["username"]
+        session["area"] = user["area"]
+        session["nivel"] = user["nivel"]
+
+        # Redirigir según área
+        if user["area"] == "ventas":
+            return jsonify({"message": "Autenticación exitosa", "redirect": "/chatbot_ventas", "success": True, "user": dict(user)})
+        elif user["area"] == "finanzas":
+            return jsonify({"message": "Autenticación exitosa", "redirect": "/chatbot_finanzas", "success": True, "user": dict(user)})
+        else:
+            return jsonify({"message": "Autenticación exitosa", "redirect": "/chatbot_admin", "success": True, "user": dict(user)})
+    else:
+        return jsonify({"error": "Huella no registrada", "success": False}), 401
 # ===============================================
 # REGISTRO DE USUARIOS
 # ===============================================
