@@ -132,46 +132,89 @@ def login():
             print("Error login:", e)
             return render_template("login.html", error=f"Error en la base de datos: {str(e)}")
     return render_template("login.html")
-@app.route("/api/fingerprint/login", methods=["POST"])
+
+@app.route('/api/fingerprint/login', methods=['POST'])
 def fingerprint_login():
-    data = request.get_json()
-    finger_id = data.get("sensor_id")
-    device_id = data.get("device_id")
+    """
+    Endpoint para autenticación por huella desde ESP32 o navegador.
+    - ESP32 recibe JSON con datos del usuario.
+    - Navegador recibe redirect y queda logueado automáticamente.
+    """
+    try:
+        data = request.get_json()
 
-    conn = get_db_connection()
-    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cur.execute("SELECT user_id FROM huellas WHERE finger_id=%s", (finger_id,))
-    fila = cur.fetchone()
-    cur.close()
-    conn.close()
+        if not data:
+            return jsonify({
+                'success': False,
+                'error': 'No se recibió JSON'
+            }), 400
 
-    if fila:
-        user_id = fila["user_id"]
+        sensor_id = data.get('sensor_id')
+        device_id = data.get('device_id', 'unknown')
 
-        # Buscar datos del usuario
+        if sensor_id is None:
+            return jsonify({
+                'success': False,
+                'error': 'sensor_id es requerido'
+            }), 400
+
+        # Buscar usuario por finger_id en la tabla huellas
         conn = get_db_connection()
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cur.execute("SELECT * FROM usuarios WHERE id=%s", (user_id,))
+        cur.execute("""
+            SELECT u.*, h.finger_id 
+            FROM huellas h
+            JOIN usuarios u ON h.user_id = u.id
+            WHERE h.finger_id = %s
+        """, (sensor_id,))
         user = cur.fetchone()
         cur.close()
         conn.close()
 
-        # Crear sesión
-        session["loggedin"] = True
-        session["user_id"] = user["id"]
-        session["username"] = user["username"]
-        session["area"] = user["area"]
-        session["nivel"] = user["nivel"]
+        if user:
+            # Crear sesión
+            session["loggedin"] = True
+            session["user_id"] = user["id"]
+            session["username"] = user["username"]
+            session["area"] = user["area"]
+            session["nivel"] = user["nivel"]
 
-        # Redirigir según área
-        if user["area"] == "ventas":
-            return jsonify({"message": "Autenticación exitosa", "redirect": "/chatbot_ventas", "success": True, "user": dict(user)})
-        elif user["area"] == "finanzas":
-            return jsonify({"message": "Autenticación exitosa", "redirect": "/chatbot_finanzas", "success": True, "user": dict(user)})
+            # Registrar log
+            ip_usuario = request.remote_addr
+            agregar_log(user['id'], 'Login por huella',
+                        f'Finger ID: {sensor_id}, Device: {device_id}',
+                        ip_usuario)
+
+            # Si es navegador → redirect
+            if "Mozilla" in request.headers.get("User-Agent", ""):
+                return redirect(f"/chatbot_{user['area']}")
+
+            # Si es ESP32 → JSON
+            return jsonify({
+                'success': True,
+                'message': 'Autenticación exitosa',
+                'user': {
+                    'id': user['id'],
+                    'username': user['username'],
+                    'area': user['area'],
+                    'nivel': user['nivel']
+                },
+                'redirect': f"/chatbot_{user['area']}"
+            })
         else:
-            return jsonify({"message": "Autenticación exitosa", "redirect": "/chatbot_admin", "success": True, "user": dict(user)})
-    else:
-        return jsonify({"error": "Huella no registrada", "success": False}), 401
+            return jsonify({
+                'success': False,
+                'error': 'Huella no registrada en el sistema',
+                'sensor_id': sensor_id
+            }), 404
+
+    except Exception as e:
+        print(f"⚠️ Error en fingerprint_login: {e}")
+        return jsonify({
+            'success': False,
+            'error': f'Error interno: {str(e)}'
+        }), 500
+
 # ===============================================
 # REGISTRO DE USUARIOS
 # ===============================================
